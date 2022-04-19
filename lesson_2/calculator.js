@@ -4,6 +4,7 @@ of an object so it can be assigned to a variable.
 */
 
 const readline = require('readline-sync');
+const MESSAGES = require('./calculator_messages.json');
 
 const prompt = message => console.log(`=> ${message}`);
 
@@ -12,27 +13,27 @@ function invalidNumber(number) {
 }
 
 // Welcome the user - user focused
-prompt('Welcome to Calculator!');
+prompt(MESSAGES["welcome"]);
 
 /* Ask user for first number using readline-sync question method. Saves
 input as a variable. */
 
 while (true) {
 
-  prompt("What's the first number?");
+  prompt(MESSAGES["firstNumber"]);
   let num1 = readline.question();
 
   while (invalidNumber(num1)) {
-    prompt("Hmm...that doesn't look like a valid number.");
+    prompt(MESSAGES["invalidNumber"]);
     num1 = readline.question();
   }
 
   // Ask user for second number in manner above
-  prompt("What's the second number?");
+  prompt(MESSAGES["secondNumber"]);
   let num2 = readline.question();
 
   while (invalidNumber(num2)) {
-    prompt("Hmm...that doesn't look like a valid number.");
+    prompt(MESSAGES["invalidNumber"]);
     num2 = readline.question();
   }
 
@@ -44,11 +45,11 @@ Giving them a numbered list makes it easier to verify user intent and
 avoid issues re format (e.g. capitalisation etc.).
 */
 
-  prompt('What operation would you like to perform?\n1) Add\n2) Subtract\n3) Multiply\n4) Divide');
+  prompt(MESSAGES["operation"]);
   let operation = readline.question();
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt('You must enter 1, 2, 3 or 4');
+    prompt(MESSAGES["invalidOperation"]);
     operation = readline.question();
   }
 
@@ -76,9 +77,9 @@ using the addition operator on strings results in string concatenation. */
   }
 
 // Print the result to the terminal
-  prompt(`The result is ${output}!`);
+  prompt(MESSAGES["result"] + output);
 
-  prompt('Would you like to perform another calculation? (y/n)');
+  prompt(MESSAGES["repeat"]);
   let response = readline.question();
 
   if (response[0].toLowerCase() !== 'y') break;
