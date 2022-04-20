@@ -5,51 +5,59 @@ of an object so it can be assigned to a variable.
 
 const readline = require('readline-sync');
 const MESSAGES = require('./calculator_messages.json');
+const LANGUAGE = 'fr';
 
-const prompt = message => console.log(`=> ${message}`);
+let messages = (message, lang='en') => {
+  return MESSAGES[lang][message];
+};
+
+let prompt = key => {
+  let message = messages(key, LANGUAGE);
+  console.log(`=> ${message}`);
+};
 
 function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
 // Welcome the user - user focused
-prompt(MESSAGES["welcome"]);
+prompt("welcome");
 
 /* Ask user for first number using readline-sync question method. Saves
 input as a variable. */
 
 while (true) {
 
-  prompt(MESSAGES["firstNumber"]);
+  prompt("firstNumber");
   let num1 = readline.question();
 
   while (invalidNumber(num1)) {
-    prompt(MESSAGES["invalidNumber"]);
+    prompt("invalidNumber");
     num1 = readline.question();
   }
 
   // Ask user for second number in manner above
-  prompt(MESSAGES["secondNumber"]);
+  prompt("secondNumber");
   let num2 = readline.question();
 
   while (invalidNumber(num2)) {
-    prompt(MESSAGES["invalidNumber"]);
+    prompt("invalidNumber");
     num2 = readline.question();
   }
 
 // Log inputs to the console which come back as strings.
-  prompt(`${num1} ${num2}`);
+  console.log(`=> ${num1} ${num2}`);
 
 /* Ask user for an operation to perform. Uses newline character here.
 Giving them a numbered list makes it easier to verify user intent and
 avoid issues re format (e.g. capitalisation etc.).
 */
 
-  prompt(MESSAGES["operation"]);
+  prompt("operation");
   let operation = readline.question();
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt(MESSAGES["invalidOperation"]);
+    prompt("invalidOperation");
     operation = readline.question();
   }
 
@@ -77,9 +85,10 @@ using the addition operator on strings results in string concatenation. */
   }
 
 // Print the result to the terminal
-  prompt(MESSAGES["result"] + output);
+  prompt("result");
+  console.log(output);
 
-  prompt(MESSAGES["repeat"]);
+  prompt("repeat");
   let response = readline.question();
 
   if (response[0].toLowerCase() !== 'y') break;
