@@ -5,7 +5,7 @@ of an object so it can be assigned to a variable.
 
 const readline = require('readline-sync');
 const MESSAGES = require('./calculator_messages.json');
-const LANGUAGE = 'fr';
+const LANGUAGE = 'en';
 
 let messages = (message, lang='en') => {
   return MESSAGES[lang][message];
@@ -20,10 +20,10 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-// Welcome the user - user focused
+// Welcomes the user
 prompt("welcome");
 
-/* Ask user for first number using readline-sync question method. Saves
+/* Asks user to input first number using readline-sync question method. Saves
 input as a variable. */
 
 while (true) {
@@ -36,7 +36,7 @@ while (true) {
     num1 = readline.question();
   }
 
-  // Ask user for second number in manner above
+  // Asks user to input second number
   prompt("secondNumber");
   let num2 = readline.question();
 
