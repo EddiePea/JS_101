@@ -1,9 +1,9 @@
 {
-  "amount" : "Please enter the loan amount\n=> e.g. for a loan of $1,000.99, enter 1000.99 *BUT NOT* 1000,99 (it will be read as 100099)",
+  "amount" : "Please enter the loan amount\n=> e.g. for a loan of $1,000.99, enter 1000.99",
   "invalidAmount" : "Please enter a valid loan amount",
-  "rate" : "Please enter the annual interest rate\n=> e.g. for 5.2% enter 5.2 *BUT NOT* 0.052 (it will be read as 0.052%)",
+  "rate" : "Please enter the annual interest rate\n=> e.g. for 5.2% enter 5.2",
   "invalidRate" : "Please enter a valid interest rate",
-  "term" : "Please enter the term of the loan in years to the nearest month\n=> e.g. for a term of 2 years and 4 months enter 2.3 (here, you divide the 4 months by 12 to change months to years)",
+  "term" : "Please enter the term of the loan in years to the nearest month\n=> e.g. for a term of 1 year and 6 months enter 1.5 (divide months by 12 to change months to years)",
   "invalidTerm" : "Please enter a valid loan term",
   "goAgain" : "If you would like to use the calculator again, please enter y for yes",
   "unclearResponse" : "Hmmm I'm not sure from your response whether or not you want to go again.\n=> Please just enter y for yes",
