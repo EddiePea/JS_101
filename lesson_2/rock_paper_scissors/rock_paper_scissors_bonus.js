@@ -55,18 +55,22 @@ function logGoodbye() {
   prompt('Thanks for playing! Goodbye!\n');
 }
 
+//Formats user input
+function formatInput(input) {
+  return input.toLowerCase().trimStart();
+}
+
 // Gets and returns user choice
-// Consider separate function to allow white space etc.
 function getUserChoice() {
   prompt(`Please choose one:`);
   console.log(`\n${Object.keys(WINNING_COMBOS).join(', ')}\nOR`);
   console.log(`abbreviate to: ${Object.keys(SHORT_OPTIONS).join(', ')}`);
 
-  let userChoice = readline.question().toLowerCase();
+  let userChoice = formatInput(readline.question());
 
   while (!VALID_CHOICES.includes(userChoice)) {
     prompt('That is not a valid choice. Please try again');
-    userChoice = readline.question().toLowerCase();
+    userChoice = formatInput(readline.question());
   }
 
   if (Object.keys(SHORT_OPTIONS).includes(userChoice)) {
@@ -105,13 +109,14 @@ function getResult(userChoice, computerChoice) {
 }
 
 //Displays score after each game
+//Is it ok to refer to the values here (e.g. rounds)?
 function displayScore(scores) {
   console.log(`ROUND ${scores.rounds} => YOU: ${scores.userWins} || COMPUTER: ${scores.computerWins}\n`);
 }
 
 //Displays results of one game
 //Should you create completely independent functions?
-//Is it ok to refer to the getResult function here?
+//e.g. is it ok to refer to the getResult and logChoices functions here?
 function displayGameResults(userChoice, computerChoice) {
 
   logChoices(userChoice, computerChoice);
@@ -140,16 +145,6 @@ function incrementScore(score, result) {
   }
 }
 
-//Play one game
-//Just experimenting: is this too much for a function to do?
-//OR is it ok/desirable to parcel up functions like this?
-function playOneGame(userChoice, computerChoice, scores, result) {
-  displayGameResults(userChoice, computerChoice);
-  incrementScore(scores, result);
-  scores.rounds += 1;
-  displayScore(scores);
-}
-
 //Displays results of a match
 function displayMatchResults(scores) {
   if (scores.userWins === WINNING_POINT) {
@@ -163,11 +158,11 @@ function displayMatchResults(scores) {
 //Consider using validating function here
 function goAgain() {
   prompt('Would you like to play again? Enter "y" for yes or any other key to exit the game');
-  let response = readline.question().toLowerCase();
+  let response = formatInput(readline.question());
 
   while (response[0] !== 'n' && response[0] !== 'y') {
     prompt ("Please enter 'y' or 'n'");
-    response = readline.question().toLowerCase();
+    response = formatInput(readline.question());
   }
 
   if (response[0].toLowerCase() === 'y') {
@@ -188,10 +183,11 @@ function resetRounds (scores) {
   scores.rounds = 0;
 }
 
-//Play match until user quits
-//NTS: play around with this more to undertand it
+//Main
+
 logGreeting();
 
+//NTS: play around with this more to undertand it
 while (true) {
 
   let scores = { userWins : 0, computerWins : 0, rounds: 0 };
@@ -203,10 +199,12 @@ while (true) {
     let computerChoice = getComputerChoice();
     let result = getResult(userChoice, computerChoice);
 
-    playOneGame(userChoice, computerChoice, scores, result);
+    displayGameResults(userChoice, computerChoice);
+    incrementScore(scores, result);
+    scores.rounds += 1;
+    displayScore(scores);
   }
 
-  //Would it be desirable to bundle up these functions into a single function?
   displayMatchResults(scores);
   resetScore(scores);
   resetRounds(scores);

@@ -108,15 +108,8 @@ function goAgain() {
 
 //Test below this line
 
-let userChoice = getUserChoice();
-let computerChoice = getComputerChoice();
-let results = getResult(userChoice, computerChoice);
+function formatInput(input) {
+  return input.toLowerCase().trimStart();
+}
 
-let scores = {
-  userWins : 0,
-  computerWins : 0,
-  round : 0
-};
-
-displayGameResults(userChoice, computerChoice);
-goAgain();
+prompt(formatInput(' HELLO'));
