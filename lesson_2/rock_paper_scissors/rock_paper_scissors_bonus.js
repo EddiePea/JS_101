@@ -1,7 +1,10 @@
-//Required files
+////Required files
+
 const READLINE = require('readline-sync');
 const MESSAGES = require('./rps_bonus_messages.json');
 const CLC = require("cli-color");
+
+////Constant variables
 
 //Combination of possible winning results
 const WINNING_COMBOS = MESSAGES["winning_combos"];
@@ -13,13 +16,15 @@ const VALID_CHOICES = Object.keys(WINNING_COMBOS)
 //Three points win a match
 const WINNING_POINT = 3;
 
+////functions
+
 //Logs styled messages; refers to MESSAGES
 function style(key, value) {
   let message = CLC.yellowBright.italic(MESSAGES[key][value]);
   console.log(`=> ${message}`);
 }
 
-//Logs message unstyled messages; refers to MESSAGES
+//Logs unstyled messages; refers to MESSAGES
 function logMessage(key,value) {
   let message = MESSAGES[key][value];
   console.log(message);
@@ -114,7 +119,6 @@ function displayScore(scores) {
 //Should functions be completely independent?
 //e.g. is it ok to refer to the getResult and logChoices functions here?
 function displayGameResults(userChoice, computerChoice) {
-
   logChoices(userChoice, computerChoice);
   let result = getResult(userChoice, computerChoice);
 
@@ -146,7 +150,7 @@ function updateRounds(scores) {
   scores.rounds += 1;
 }
 
-//Lots results of a match
+//Logs results of a match
 function logMatchResults(scores) {
   if (scores.userWins === WINNING_POINT) {
     style("match_results", "user_win");
@@ -222,7 +226,8 @@ function playMatch() {
   }
 }
 
-//Main program
+////Main program
+
 logGreeting();
 playMatch();
 logGoodbye();
