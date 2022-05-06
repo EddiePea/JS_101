@@ -1,5 +1,7 @@
 //Required files
 const readline = require('readline-sync');
+const MESSAGES = require('./rps_bonus_messages.json');
+const clc = require("cli-color");
 
 // Logs formatted messages
 function prompt(message) {
@@ -108,8 +110,15 @@ function goAgain() {
 
 //Test below this line
 
-function formatInput(input) {
-  return input.toLowerCase().trimStart();
+function styleText(text) {
+  return clc.green.underline(text);
 }
 
-prompt(formatInput(' HELLO'));
+console.log(styleText('hello Eddie'));
+
+let styles = 'font-weight: bold; font-size: 50px;color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) '
+let message = 'Wubba Lubba Dub Dub!';
+console.log('%c %s', styles, message);
+
+console.log(clc.red.underline('hello!'));
+
