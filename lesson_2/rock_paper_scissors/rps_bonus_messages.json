@@ -2,7 +2,7 @@
   "greetings" : {
     "welcome" : "WELCOME TO ROCK, PAPER, SCISSORS, LIZARD, SPOCK!\n",
     "new_greeting" : "Welcome to a new match!\n",
-    "goodbye" : "Thanks for playing! Goodbye!\n"
+    "goodbye" : "Thanks for playing. Goodbye!\n"
   },
 
   "winning_combos": {
@@ -22,7 +22,7 @@
   },
 
   "rules" :  {
-    "rule_title" : "**RULES**\n",
+    "rule_title" : "*** RULES ***\n",
     "rule_one"   : "ROCK beats SCISSORS and LIZARD",
     "rule_two"   : "PAPER beats ROCK and SPOCK",
     "rule_three" : "SCISSORS beat PAPER and LIZARD",
@@ -32,7 +32,8 @@
   },
 
   "user_chooses" : {
-    "get_choice" : "Please choose one:",
+    "get_choice" : "Please choose one:\n",
+    "or" : "OR abbreviate to:\n",
     "invalid_choice" : "That is not a valid choice. Please try again"
   },
 

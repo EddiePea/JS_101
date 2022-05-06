@@ -6,23 +6,20 @@ const CLC = require("cli-color");
 //Combination of possible winning results
 const WINNING_COMBOS = MESSAGES["winning_combos"];
 const SHORT_OPTIONS = MESSAGES["short_options"];
+
 const VALID_CHOICES = Object.keys(WINNING_COMBOS)
   .concat(Object.keys(SHORT_OPTIONS));
 
 //Three points win a match
 const WINNING_POINT = 3;
 
-//Styles text
-function styleText(text) {
-  return CLC.green.underline(text);
-}
-//Logs message with 'prompt' (=>) and refers to MESSAGES
-function prompt(key, value) {
-  let message = MESSAGES[key][value];
+//Logs styled messages; refers to MESSAGES
+function style(key, value) {
+  let message = CLC.yellowBright.italic(MESSAGES[key][value]);
   console.log(`=> ${message}`);
 }
 
-//Logs message without prompt (=>) and refer to MESSAGES
+//Logs message unstyled messages; refers to MESSAGES
 function logMessage(key,value) {
   let message = MESSAGES[key][value];
   console.log(message);
@@ -31,7 +28,7 @@ function logMessage(key,value) {
 //Greets user and explains the rules
 function logGreeting() {
   console.clear();
-  prompt("greetings", "welcome");
+  style("greetings", "welcome");
   logMessage("rules", "rule_title");
   logMessage("rules", "rule_one");
   logMessage("rules", "rule_two");
@@ -44,13 +41,13 @@ function logGreeting() {
 //Starts new match with greeting
 function logNewGreeting() {
   console.clear();
-  prompt("greetings", "new_greeting");
+  style("greetings", "new_greeting");
 }
 
 //Says goodbye to the user
 function logGoodbye() {
   console.clear();
-  prompt("greetings", "goodbye");
+  style("greetings", "goodbye");
 }
 
 //Formats user input
@@ -60,14 +57,16 @@ function formatInput(input) {
 
 // Gets and returns user choice
 function getUserChoice() {
-  prompt("user_chooses", "get_choice");
-  console.log(`\n${Object.keys(WINNING_COMBOS).join(', ')}\n\nOR\n`);
-  console.log(`abbreviate to: ${Object.keys(SHORT_OPTIONS).join(', ')}`);
+
+  style("user_chooses", "get_choice");
+  console.log(`${Object.keys(WINNING_COMBOS).join(', ')}\n`);
+  style("user_chooses", "or");
+  console.log(`${Object.keys(SHORT_OPTIONS).join(', ')}`);
 
   let userChoice = formatInput(READLINE.question());
 
   while (!VALID_CHOICES.includes(userChoice)) {
-    prompt("user_chooses", "invalid_choice");
+    style("user_chooses", "invalid_choice");
     userChoice = formatInput(READLINE.question());
   }
   if (Object.keys(SHORT_OPTIONS).includes(userChoice)) {
@@ -120,13 +119,13 @@ function displayGameResults(userChoice, computerChoice) {
   let result = getResult(userChoice, computerChoice);
 
   if (result === 'user') {
-    prompt ("game_results", "win");
+    style ("game_results", "win");
 
   } else if (result === 'computer') {
-    prompt ("game_results", "lose");
+    style ("game_results", "lose");
 
   } else {
-    prompt ("game_results", "draw");
+    style ("game_results", "draw");
   }
 }
 
@@ -150,19 +149,20 @@ function updateRounds(scores) {
 //Lots results of a match
 function logMatchResults(scores) {
   if (scores.userWins === WINNING_POINT) {
-    prompt("match_results", "user_win");
+    style("match_results", "user_win");
+
   } else if (scores.computerWins === WINNING_POINT) {
-    prompt("match_results", "computer_win");
+    style("match_results", "computer_win");
   }
 }
 
 //Asks user if they want to play again
 function goAgain() {
-  prompt("play_again", "ask");
+  style("play_again", "ask");
   let response = formatInput(READLINE.question());
 
   while (response[0] !== 'n' && response[0] !== 'y') {
-    prompt ("play_again", "invalid_response");
+    logMessage ("play_again", "invalid_response");
     response = formatInput(READLINE.question());
   }
   if (response[0] === 'y') {
