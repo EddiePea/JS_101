@@ -5,7 +5,7 @@
     "goodbye" : "Thanks for playing. Goodbye!\n"
   },
 
-  "winning_combos": {
+  "winning_combos" : {
     "rock": ["scissors", "lizard"],
     "paper": ["rock", "spock"],
     "scissors": ["paper", "lizard"],
@@ -13,7 +13,7 @@
     "lizard": ["paper", "spock"]
   },
 
-  "short_options": {
+  "short_options" : {
     "r": "rock",
     "p": "paper",
     "sc": "scissors",
