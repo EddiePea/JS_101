@@ -1,10 +1,7 @@
-////Required files
-
-const READLINE = require('readline-sync');
-const MESSAGES = require('./rps_bonus_messages.json');
+//Required files
+const READLINE = require("readline-sync");
+const MESSAGES = require("./rps_bonus_messages.json");
 const CLC = require("cli-color");
-
-////Constant variables
 
 //Combination of possible winning results
 const WINNING_COMBOS = MESSAGES["winning_combos"];
@@ -16,10 +13,8 @@ const VALID_CHOICES = Object.keys(WINNING_COMBOS)
 //Three points win a match
 const WINNING_POINT = 3;
 
-////functions
-
 //Logs styled messages; refers to MESSAGES
-function style(key, value) {
+function logStyledMessage(key, value) {
   let message = CLC.yellowBright.italic(MESSAGES[key][value]);
   console.log(`=> ${message}`);
 }
@@ -33,7 +28,7 @@ function logMessage(key,value) {
 //Greets user and explains the rules
 function logGreeting() {
   console.clear();
-  style("greetings", "welcome");
+  logStyledMessage("greetings", "welcome");
   logMessage("rules", "rule_title");
   logMessage("rules", "rule_one");
   logMessage("rules", "rule_two");
@@ -46,13 +41,13 @@ function logGreeting() {
 //Starts new match with greeting
 function logNewGreeting() {
   console.clear();
-  style("greetings", "new_greeting");
+  logStyledMessage("greetings", "new_greeting");
 }
 
 //Says goodbye to the user
 function logGoodbye() {
   console.clear();
-  style("greetings", "goodbye");
+  logStyledMessage("greetings", "goodbye");
 }
 
 //Formats user input
@@ -63,15 +58,15 @@ function formatInput(input) {
 // Gets and returns user choice
 function getUserChoice() {
 
-  style("user_chooses", "get_choice");
+  logStyledMessage("user_chooses", "get_choice");
   console.log(`${Object.keys(WINNING_COMBOS).join(', ')}\n`);
-  style("user_chooses", "or");
+  logStyledMessage("user_chooses", "or");
   console.log(`${Object.keys(SHORT_OPTIONS).join(', ')}`);
 
   let userChoice = formatInput(READLINE.question());
 
   while (!VALID_CHOICES.includes(userChoice)) {
-    style("user_chooses", "invalid_choice");
+    logStyledMessage("user_chooses", "invalid_choice");
     userChoice = formatInput(READLINE.question());
   }
   if (Object.keys(SHORT_OPTIONS).includes(userChoice)) {
@@ -94,52 +89,48 @@ function getComputerChoice() {
 function logChoices(userChoice, computerChoice) {
   console.clear();
   console.log(`=> You chose: ${userChoice.toUpperCase()} | Computer chose: ${computerChoice.toUpperCase()}`);
-  console.log('\n***********************************************\n');
+  console.log("\n***********************************************\n");
 }
 
 //Returns the result of one game
 function getResult(userChoice, computerChoice) {
   if ((WINNING_COMBOS[userChoice]).includes(computerChoice)) {
-    return 'user';
+    return "user";
   } else if ((WINNING_COMBOS[computerChoice]).includes(userChoice)) {
-    return 'computer';
+    return "computer";
   } else {
-    return 'draw';
+    return "draw";
   }
 }
 
 //Displays score after each game
-//Is it ok to refer to the values of an (as yet) undefined object (e.g. rounds)?
-//I tried adding the values as parameters, but it didn't work
 function displayScore(scores) {
   console.log(`ROUND ${scores.rounds} => YOU: ${scores.userWins} || COMPUTER: ${scores.computerWins}\n`);
 }
 
 //Displays results of one game
-//Should functions be completely independent?
-//e.g. is it ok to refer to the getResult and logChoices functions here?
 function displayGameResults(userChoice, computerChoice) {
   logChoices(userChoice, computerChoice);
   let result = getResult(userChoice, computerChoice);
 
-  if (result === 'user') {
-    style ("game_results", "win");
+  if (result === "user") {
+    logStyledMessage("game_results", "win");
 
-  } else if (result === 'computer') {
-    style ("game_results", "lose");
+  } else if (result === "computer") {
+    logStyledMessage("game_results", "lose");
 
   } else {
-    style ("game_results", "draw");
+    logStyledMessage("game_results", "draw");
   }
 }
 
 //Increments the score
 function updateScore(scores, result) {
   switch (result) {
-    case 'user':
+    case "user":
       scores.userWins += 1;
       break;
-    case 'computer':
+    case "computer":
       scores.computerWins += 1;
       break;
   }
@@ -153,43 +144,37 @@ function updateRounds(scores) {
 //Logs results of a match
 function logMatchResults(scores) {
   if (scores.userWins === WINNING_POINT) {
-    style("match_results", "user_win");
+    logStyledMessage("match_results", "user_win");
 
   } else if (scores.computerWins === WINNING_POINT) {
-    style("match_results", "computer_win");
+    logStyledMessage("match_results", "computer_win");
   }
 }
 
 //Asks user if they want to play again
 function goAgain() {
-  style("play_again", "ask");
+  logStyledMessage("play_again", "ask");
   let response = formatInput(READLINE.question());
 
-  while (response[0] !== 'n' && response[0] !== 'y') {
-    logMessage ("play_again", "invalid_response");
+  while (response !== "n" && response !== "y") {
+    logMessage("play_again", "invalid_response");
     response = formatInput(READLINE.question());
   }
-  if (response[0] === 'y') {
-    return true;
-  } else {
-    return false;
-  }
+  return response === "y";
 }
 
 //Resets the score after a match
-function resetScore (scores) {
+function resetScore(scores) {
   scores.userWins = 0;
   scores.computerWins = 0;
 }
 
 //Resets rounds after a match
-function resetRounds (scores) {
+function resetRounds(scores) {
   scores.rounds = 0;
 }
 
 //Plays one game: displays results, updates and displays scores and rounds
-//Is it ok to abstract out functions like this?
-//I'm mindful of the advice that functions should only do one thing
 function playOneGame(userChoice, computerChoice, scores, result) {
   displayGameResults(userChoice, computerChoice);
   updateScore(scores, result);
@@ -219,15 +204,13 @@ function playMatch() {
       playOneGame(userChoice, computerChoice, scores, result);
     }
     endMatch(scores);
-    // Is it ok to call the function inside an if statement like this?
     if (goAgain()) {
       logNewGreeting();
     } else break;
   }
 }
 
-////Main program
-
+//Main program
 logGreeting();
 playMatch();
 logGoodbye();
