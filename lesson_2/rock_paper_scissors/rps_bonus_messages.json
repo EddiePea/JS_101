@@ -1,11 +1,11 @@
 { 
-  "greetings" : {
-    "welcome" : "WELCOME TO ROCK, PAPER, SCISSORS, LIZARD, SPOCK!\n",
-    "new_greeting" : "Welcome to a new match!\n",
-    "goodbye" : "Thanks for playing. Goodbye!\n"
+  "greetings": {
+    "welcome": "WELCOME TO ROCK, PAPER, SCISSORS, LIZARD, SPOCK!\n",
+    "new_greeting": "Welcome to a new match!\n",
+    "goodbye": "Thanks for playing. Goodbye!\n"
   },
 
-  "winning_combos" : {
+  "winning_combos": {
     "rock": ["scissors", "lizard"],
     "paper": ["rock", "spock"],
     "scissors": ["paper", "lizard"],
@@ -13,7 +13,7 @@
     "lizard": ["paper", "spock"]
   },
 
-  "short_options" : {
+  "short_options": {
     "r": "rock",
     "p": "paper",
     "sc": "scissors",
@@ -21,35 +21,35 @@
     "l": "lizard"
   },
 
-  "rules" :  {
-    "rule_title" : "*** RULES ***\n",
-    "rule_one"   : "ROCK beats SCISSORS and LIZARD",
-    "rule_two"   : "PAPER beats ROCK and SPOCK",
-    "rule_three" : "SCISSORS beat PAPER and LIZARD",
-    "rule_four"  : "LIZARD beats PAPER and SPOCK",
-    "rule_five"  : "SPOCK beats ROCK and SCISSORS\n",
-    "rule_six"   : "First to win 3 GAMES wins the MATCH!\n" 
+  "rules":  {
+    "rule_title": "*** RULES ***\n",
+    "rule_one": "ROCK beats SCISSORS and LIZARD",
+    "rule_two": "PAPER beats ROCK and SPOCK",
+    "rule_three": "SCISSORS beat PAPER and LIZARD",
+    "rule_four": "LIZARD beats PAPER and SPOCK",
+    "rule_five": "SPOCK beats ROCK and SCISSORS\n",
+    "rule_six": "First to win 3 GAMES wins the MATCH!\n" 
   },
 
-  "user_chooses" : {
-    "get_choice" : "Please choose one:\n",
-    "or" : "OR abbreviate to:\n",
-    "invalid_choice" : "That is not a valid choice. Please try again"
+  "user_chooses": {
+    "get_choice": "Please choose one:\n",
+    "or": "OR abbreviate to:\n",
+    "invalid_choice": "That is not a valid choice. Please try again"
   },
 
-  "game_results" : {
-    "win" : "HURRAH! YOU WIN\n",
-    "lose" : "BAD LUCK, YOU LOSE\n",
-    "draw" : "IT'S A DRAW!\n"
+  "game_results": {
+    "win": "HURRAH! YOU WIN\n",
+    "lose": "BAD LUCK, YOU LOSE\n",
+    "draw": "IT'S A DRAW!\n"
   },
 
-  "match_results" : {
-    "user_win" : "You win the match! Congrats!\n",
-    "computer_win" : "Computer wins the match! Bad luck\n"
+  "match_results": {
+    "user_win": "You win the match! Congrats!\n",
+    "computer_win": "Computer wins the match! Bad luck\n"
   },
 
-  "play_again" : {
-    "ask" : "Would you like to play again? Enter 'y' for yes or any other key to exit the game",
-    "invalid_response" : "Please enter 'y' or 'n'"
+  "play_again": {
+    "ask": "Would you like to play again? Enter 'y' for yes or any other key to exit the game",
+    "invalid_response": "Please enter 'y' or 'n'"
   }
 }
