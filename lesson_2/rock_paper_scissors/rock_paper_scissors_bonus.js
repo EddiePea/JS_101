@@ -204,6 +204,7 @@ function playMatch() {
       playOneGame(userChoice, computerChoice, scores, result);
     }
     endMatch(scores);
+
     if (goAgain()) {
       logNewGreeting();
     } else break;
