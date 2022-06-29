@@ -1,9 +1,18 @@
+//CONSTANT VARIABLES
+
 const READLINE = require("readline-sync");
 
 const DECK = [
-  ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
-  ['H', 'D', 'S', 'C']
+  ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
+  ["H", "D", "S", "C"]
 ];
+
+const FIRST_CARDS_DEALT = 4;
+const MAX_POINTS = 21;
+const MAX_ACE_VALUE = 11;
+const ROYALS_VALUE = 10;
+//The minimum score for the dealer: he has to hit if his score is below this
+const DEALER_MIN_SCORE = 17;
 
 //SET UP GAME
 
@@ -27,25 +36,20 @@ function createDeck(dealtCards) {
 
 //Deals first four cards
 function dealFirstCards(dealtCards) {
-  while (dealtCards.length < 4) {
+  while (dealtCards.length < FIRST_CARDS_DEALT) {
     createDeck(dealtCards);
   }
 }
 
 //Assign first cards to player
-function assignFirstPlayerCards(playerCards, dealtCards) {
-  for (let indx = 0; indx < 2; indx += 1) {
-    playerCards.push(dealtCards[indx]);
+function assignFirstCards(playerCards, dealerCards, dealtCards) {
+  for (let indx = 0; indx < FIRST_CARDS_DEALT; indx += 1) {
+    if (indx % 2 === 0) {
+      playerCards.push(dealtCards[indx]);
+    } else {
+      dealerCards.push(dealtCards[indx]);
+    }
   }
-  return playerCards;
-}
-
-//Assign first cards to dealer
-function assignFirstDealerCards(dealerCards, dealtCards) {
-  for (let indx = 2; indx < 4; indx += 1) {
-    dealerCards.push(dealtCards[indx]);
-  }
-  return dealerCards;
 }
 
 //SHOW CARDS
@@ -67,8 +71,7 @@ function showPlayerStatus(playerCards) {
   let score = calculateScore(playerCards);
 
   playerCards.forEach(card => {
-    card = card.join('');
-    cardNames.push(card);
+    cardNames.push(card.join(''));
   });
 
   console.log(`\nYou hold ${cardNames} and have a total score of ${score}`);
@@ -78,9 +81,9 @@ function showPlayerStatus(playerCards) {
 //Format this
 function showDealerHand(dealerCards) {
   let cardNames = [];
+
   dealerCards.forEach(card => {
-    card = card.join('');
-    cardNames.push(card);
+    cardNames.push(card.join(''));
   });
   console.log(`\nDealer holds: ${cardNames}`);
 }
@@ -119,6 +122,7 @@ function playerHits(dealtCards, playerCards) {
   let card = dealNewCard(dealtCards);
   playerCards.push(card);
   console.clear();
+
   showPlayerCard(card);
   showPlayerStatus(playerCards);
 }
@@ -153,12 +157,14 @@ function playerGo(dealtCards, playerCards) {
   printPlayerResults(playerCards);
 }
 
-//Play go for dealer
+//Dealer go
 function dealerGo(dealtCards, dealerCards, playerCards) {
   let dealerScore = calculateScore(dealerCards);
   let playerScore = calculateScore(playerCards);
 
-  while (dealerScore < 17 || (dealerScore < 21 && playerScore > dealerScore)) {
+  while (dealerScore < DEALER_MIN_SCORE ||
+    (dealerScore < MAX_POINTS && playerScore > dealerScore)) {
+
     let card = dealNewCard(dealtCards);
     dealerCards.push(card);
     showDealerCard(card);
@@ -170,27 +176,29 @@ function dealerGo(dealtCards, dealerCards, playerCards) {
 
 //Calculate score
 function calculateScore(cards) {
+
   let cardValues = cards.map(card => card[0]);
   let sum = 0;
 
   cardValues.forEach(value => {
     if (value === 'A') {
-      sum += 11;
+      sum += MAX_ACE_VALUE;
     } else if (['J', 'Q', 'K'].includes(value)) {
-      sum += 10;
+      sum += ROYALS_VALUE;
     } else {
       sum += Number(value);
     }
   });
+
   cardValues.filter(value => value === 'A').forEach(_ => {
-    if (sum > 21) sum -= 10;
+    if (sum > MAX_POINTS) sum -= (MAX_ACE_VALUE - 1);
   });
   return sum;
 }
 
 //Evaluate if bust
 function evaluateBust(score) {
-  return score > 21;
+  return score > MAX_POINTS;
 }
 
 //Print player's results after their go
@@ -199,7 +207,7 @@ function printPlayerResults(playerCards) {
   let score = calculateScore(playerCards);
 
   if (evaluateBust(score)) {
-    console.log(`\nYou're bust with a total score of ${score}! Bad luck, you lose`);
+    console.log(`\nYou're bust with a total score of ${score}! Bad luck, you lose.\nEnd of game :(`);
 
   } else {
     console.clear();
@@ -226,7 +234,7 @@ function calculateTotalResult(dealerCards, playerCards) {
   }
 }
 
-//Print game result
+//Print game result after dealer go
 function printResult(dealerCards, playerCards) {
   let result = calculateTotalResult(dealerCards, playerCards);
   let dealerScore = calculateScore(dealerCards);
@@ -237,10 +245,10 @@ function printResult(dealerCards, playerCards) {
       console.log(`\nDealer is bust with a score of ${dealerScore}. Well done, you win!`);
       break;
     case 'DEALER':
-      console.log(`\nDealer wins with a score of ${dealerScore}. Bad luck`);
+      console.log(`\nDealer wins with a score of ${dealerScore}. Bad luck :(`);
       break;
     case 'DRAW':
-      console.log(`\nYou've both scored ${playerScore}. Dealer wins on a draw`);
+      console.log(`\nYou've both scored ${playerScore}. Dealer wins on a draw :()`);
       break;
     case 'PLAYER':
       console.log(`\nDealer loses with a score of ${dealerScore} against your score of ${playerScore}!`);
@@ -252,8 +260,7 @@ function printResult(dealerCards, playerCards) {
 //Open the game: deal, assign and show cards
 function openGame(dealtCards, playerCards, dealerCards) {
   dealFirstCards(dealtCards);
-  assignFirstPlayerCards(playerCards, dealtCards);
-  assignFirstDealerCards(dealerCards, dealtCards);
+  assignFirstCards(playerCards, dealerCards, dealtCards);
   console.clear();
   showFirstCards(playerCards, dealerCards);
 }
@@ -262,7 +269,6 @@ function openGame(dealtCards, playerCards, dealerCards) {
 function playAgain() {
 
   console.log("\nDo you want to play again? Press 'y' and enter if yes\nPress any other key to exit");
-
   let answer = READLINE.question().toLowerCase();
 
   while (answer[0] === 'y' && answer.length > 1) {
@@ -283,10 +289,7 @@ while (true) {
   openGame(dealtCards, playerCards, dealerCards);
   playerGo(dealtCards, playerCards);
 
-  if (evaluateBust(calculateScore(playerCards))) {
-    console.log('End of game!');
-
-  } else {
+  if (!evaluateBust(calculateScore(playerCards))) {
     dealerGo(dealtCards, dealerCards, playerCards);
     showDealerHand(dealerCards);
     printResult(dealerCards, playerCards);
