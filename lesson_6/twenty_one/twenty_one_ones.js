@@ -14,25 +14,75 @@ function dealCard(dealtCards) {
     let randomIndx = Math.floor(Math.random() * subArr.length);
     card.push(subArr[randomIndx]);
   });
-  console.log(card);
   let oneCardStr = card.join('');
-  console.log(oneCardStr);
   let allCardsStr = dealtCards.map(elem => elem.join(''));
-  console.log(allCardsStr);
 
   if (!(allCardsStr.includes(oneCardStr))) {
     dealtCards.push(card);
-    console.log(dealtCards);
   }
   return dealtCards;
 }
 
-function dealFirstCards(dealtCards) {
-  while (dealtCards.length < 100) {
+//Still bloody broken
+function dealNewCard(dealtCards) {
+
+  let startLength = dealtCards.length;
+  dealCard(dealtCards);
+
+  while (dealtCards.length === startLength) {
     dealCard(dealtCards);
   }
+  let newCard = dealtCards[dealtCards.length - 1];
+  return newCard;
 }
-let dealtCards = [];
 
-dealFirstCards(dealtCards);
-console.log(dealtCards);
+
+/*
+So when a repeat is dealt, it isn't rolling the dice again, but taking the
+last card from the array
+*/
+
+let dealtCards3 = [
+  [ 'A', 'C' ],  [ '6', 'C' ],  [ '2', 'D' ],
+  [ '7', 'D' ],  [ 'Q', 'D' ],  [ '3', 'C' ],
+  [ '7', 'C' ],  [ 'A', 'D' ],  [ 'J', 'C' ],
+  [ '7', 'H' ],  [ '10', 'D' ], [ '4', 'C' ],
+  [ '9', 'C' ],  [ '2', 'S' ],  [ '9', 'S' ],
+  [ '8', 'D' ],  [ '6', 'H' ],  [ 'J', 'S' ],
+  [ '8', 'H' ],  [ '4', 'S' ],  [ '5', 'C' ],
+  [ 'Q', 'H' ],  [ '3', 'H' ],  [ '4', 'D' ],
+  [ 'J', 'D' ],  [ 'K', 'D' ],  [ 'A', 'H' ],
+  [ '10', 'C' ], [ '10', 'H' ], [ 'Q', 'S' ],
+  [ 'J', 'H' ],  [ '5', 'D' ],  [ '3', 'D' ],
+  [ '6', 'D' ],  [ '4', 'H' ],  [ '5', 'S' ],
+  [ 'K', 'H' ],  [ 'A', 'S' ],  [ '6', 'S' ],
+  [ '9', 'D' ],  [ 'K', 'S' ],  [ '7', 'S' ],
+  [ '10', 'S' ], [ '9', 'H' ],  [ '8', 'S' ],
+  [ '2', 'C' ],  [ '3', 'S' ],  [ '5', 'H' ],
+  ['2', 'H']
+];
+
+console.log(dealNewCard(dealtCards3));
+
+/*
+let dealtCards2 = [
+  [ 'A', 'C' ],  [ '6', 'C' ],  [ '2', 'D' ],
+  [ '7', 'D' ],  [ 'Q', 'D' ],  [ '3', 'C' ],
+  [ '7', 'C' ],  [ 'A', 'D' ],  [ 'J', 'C' ],
+  [ '7', 'H' ],  [ '10', 'D' ], [ '4', 'C' ],
+  [ '9', 'C' ],  [ '2', 'S' ],  [ '9', 'S' ],
+  [ '8', 'D' ],  [ '6', 'H' ],  [ 'J', 'S' ],
+  [ '8', 'H' ],  [ '4', 'S' ],  [ '5', 'C' ],
+  [ 'Q', 'H' ],  [ '3', 'H' ],  [ '4', 'D' ],
+  [ 'J', 'D' ],  [ 'K', 'D' ],  [ 'A', 'H' ],
+  [ '10', 'C' ], [ '10', 'H' ], [ 'Q', 'S' ],
+  [ 'J', 'H' ],  [ '5', 'D' ],  [ '3', 'D' ],
+  [ '6', 'D' ],  [ '4', 'H' ],  [ '5', 'S' ],
+  [ 'K', 'H' ],  [ 'A', 'S' ],  [ '6', 'S' ],
+  [ '9', 'D' ],  [ 'K', 'S' ],  [ '7', 'S' ],
+  [ '10', 'S' ], [ '9', 'H' ],  [ '8', 'S' ],
+  [ '2', 'C' ],  [ '3', 'S' ],  [ '5', 'H' ],
+  [ 'Q', 'C' ],  [ '8', 'C' ],  [ 'K', 'C' ],
+];
+
+*/
