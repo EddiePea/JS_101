@@ -23,7 +23,6 @@ function dealCard(dealtCards) {
   return dealtCards;
 }
 
-//Still bloody broken
 function dealNewCard(dealtCards) {
 
   let startLength = dealtCards.length;
