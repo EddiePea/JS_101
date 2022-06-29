@@ -3,7 +3,7 @@
 //CONSTANTS
 
 //Required files
-const COLORS = require("colors");
+require("colors");
 const EMOJI = require("node-emoji");
 const READLINE = require("readline-sync");
 
@@ -15,14 +15,14 @@ const GAMES_TO_WIN = 5;
 
 //Winning combinations
 let WINNING_COMBOS = [
-  ['1', '2', '3'],
-  ['4', '5', '6'],
-  ['7', '8', '9'],
-  ['1', '4', '7'],
-  ['2', '5', '8'],
-  ['3', '6', '9'],
-  ['1', '5', '9'],
-  ['3', '5', '7']
+  ["1", "2", "3"],
+  ["4", "5", "6"],
+  ["7", "8", "9"],
+  ["1", "4", "7"],
+  ["2", "5", "8"],
+  ["3", "6", "9"],
+  ["1", "5", "9"],
+  ["3", "5", "7"]
 ];
 
 //MESSAGE AND FORMATTING FUNCTIONS
@@ -41,7 +41,7 @@ function createEmojis(emoji) {
 //Press any key to continue
 //This adds a pause between certain steps to prevent immediate console clearing
 function pressAnyKeyToCont() {
-  let response = READLINE.question();
+  READLINE.question();
 }
 
 //Welcome to game
@@ -64,12 +64,12 @@ function sayGoodbye() {
 function getCoinChoice() {
   prompt("Let's toss a coin to see who goes first.\n".brightYellow);
   prompt("Pick heads (h) or tails (t)\n".brightRed.italic);
-  createEmojis('coin');
-  createEmojis('coin');
-  createEmojis('coin');
+  createEmojis("coin");
+  createEmojis("coin");
+  createEmojis("coin");
   let userChoice = READLINE.question().trim().toLowerCase();
 
-  while (userChoice !== 'h' && userChoice !== "t") {
+  while (userChoice !== "h" && userChoice !== "t") {
     prompt("Please choose h for heads or t for tails");
     userChoice = READLINE.question().trim().toLowerCase()[0];
   }
@@ -80,9 +80,9 @@ function getCoinChoice() {
 function decideFirstPlayer(userChoice) {
   let coinToss;
   if (Math.random() < 0.5) {
-    coinToss = 'h';
+    coinToss = "h";
   } else {
-    coinToss = 't';
+    coinToss = "t";
   }
   return userChoice === coinToss;
 }
@@ -160,7 +160,7 @@ function getUserChoice(board) {
   userSquare = READLINE.question().trim();
 
   while (!"123456789".includes(userSquare) || !emptySquares(board).includes(userSquare)) {
-    createEmojis(':cop:');
+    createEmojis(":cop:");
     console.log("Please make a valid selection");
     userSquare = READLINE.question().trim();
   }
@@ -171,8 +171,8 @@ function getUserChoice(board) {
 // eslint-disable-next-line consistent-return
 function getCompDefensiveChoice(board) {
 
-  for (let i = 0; i < WINNING_COMBOS.length; i += 1) {
-    let [ sq1, sq2, sq3 ] = WINNING_COMBOS[i];
+  for (let indx = 0; indx < WINNING_COMBOS.length; indx += 1) {
+    let [ sq1, sq2, sq3 ] = WINNING_COMBOS[indx];
 
     if (board[sq1] === USER_MARKER && board[sq2] === USER_MARKER &&
         board[sq3] === EMPTY_SQUARE) {
@@ -196,8 +196,8 @@ function getCompDefensiveChoice(board) {
 // eslint-disable-next-line consistent-return
 function getCompOffensiveChoice(board) {
 
-  for (let i = 0; i < WINNING_COMBOS.length; i += 1) {
-    let [ sq1, sq2, sq3 ] = WINNING_COMBOS[i];
+  for (let indx = 0; indx < WINNING_COMBOS.length; indx += 1) {
+    let [ sq1, sq2, sq3 ] = WINNING_COMBOS[indx];
 
     if (board[sq1] === COMP_MARKER && board[sq2] === COMP_MARKER &&
         board[sq3] === EMPTY_SQUARE) {
@@ -260,13 +260,13 @@ function findWinner(board) {
       board[sq2] === USER_MARKER &&
       board[sq3] === USER_MARKER
     ) {
-      return 'You';
+      return "You";
     } else if (
       board[sq1] === COMP_MARKER &&
       board[sq2] === COMP_MARKER &&
       board[sq3] === COMP_MARKER
     ) {
-      return 'Computer';
+      return "Computer";
     }
   }
   return null;
@@ -306,7 +306,7 @@ function displayGameWinner(board) {
   let winner = findWinner(board);
 
   if (someoneWon(board)) {
-    createEmojis(':collision:');
+    createEmojis(":collision:");
     prompt(`${winner} won!`.rainbow);
 
   } else {
@@ -318,10 +318,10 @@ function displayGameWinner(board) {
 function displayMatchWinner(scores) {
 
   if (scores.userWins === GAMES_TO_WIN) {
-    console.log('\nWELL DONE! You won the match\n');
+    console.log("\nWELL DONE! You won the match\n");
 
   } else if (scores.compWins === GAMES_TO_WIN) {
-    console.log('\nBAD LUCK! Computer won the match\n');
+    console.log("\nBAD LUCK! Computer won the match\n");
   }
 }
 
@@ -370,26 +370,26 @@ function playAnotherMatch() {
 
 //Choose square depending on current player
 function chooseSquare(board, currentPlayer) {
-  if (currentPlayer === 'user') {
+  if (currentPlayer === "user") {
     getUserChoice(board);
 
-  } else if (currentPlayer === 'computer') {
+  } else if (currentPlayer === "computer") {
     getCompChoice(board);
   }
 }
 
 //Alternate player
 function alternatePlayer(currentPlayer) {
-  if (currentPlayer === 'user') {
-    return 'computer';
+  if (currentPlayer === "user") {
+    return "computer";
 
-  } else return 'user';
+  } else return "user";
 }
 
 //Play one game; user goes first
 function playGameUserFirst(board, scores) {
 
-  let currentPlayer = 'user';
+  let currentPlayer = "user";
 
   while (true) {
     chooseSquare(board, currentPlayer);
