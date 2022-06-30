@@ -1,6 +1,7 @@
-//CONSTANT VARIABLES
+//*** CONSTANT VARIABLES
 
 const READLINE = require("readline-sync");
+const EMOJI = require("node-emoji");
 
 const DECK = [
   ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
@@ -13,10 +14,46 @@ const MAX_ACE_VALUE = 11;
 const ROYALS_VALUE = 10;
 //The minimum score for the dealer: he has to hit if his score is below this
 const DEALER_MIN_SCORE = 17;
+const GAMES_TO_WIN = 3;
 
-//SET UP GAME
+//*** MESSAGES
 
-//Creates the deck
+//Prompt
+function prompt(message) {
+  console.log(`=> ${message}`);
+}
+
+//Welcome messages
+function printWelcome() {
+  console.clear();
+  console.log("***WELCOME TO 21s***");
+  createEmojis("hearts");
+  createEmojis("clubs");
+  createEmojis("diamonds");
+  createEmojis("spades");
+  prompt("The aim is to get cards with the highest total score");
+  prompt("BUT if you go over 21, you're bust, and the dealer wins");
+  prompt(`If the scores are tied, dealer wins`);
+  prompt(`You'll be playing best of ${GAMES_TO_WIN} rounds\n\nGOOD LUCK!`);
+  READLINE.question("\nPress ENTER to continue");
+}
+
+//Goodbye message
+function printGoodbye() {
+  console.clear();
+  prompt("Bye! Thanks for playing\n");
+}
+
+//Creates emojis
+function createEmojis(emoji) {
+  let loggedEmoji = EMOJI.get(emoji);
+  console.log(loggedEmoji);
+}
+
+//*** SET UP GAME
+
+//Creates the deck card by card
+//Ensures no duplicate cards are dealt
 function createDeck(dealtCards) {
   let card = [];
 
@@ -41,7 +78,7 @@ function dealFirstCards(dealtCards) {
   }
 }
 
-//Assign first cards to player
+//Assigns first cards to players
 function assignFirstCards(playerCards, dealerCards, dealtCards) {
   for (let indx = 0; indx < FIRST_CARDS_DEALT; indx += 1) {
     if (indx % 2 === 0) {
@@ -52,59 +89,65 @@ function assignFirstCards(playerCards, dealerCards, dealtCards) {
   }
 }
 
-//SHOW CARDS
+//*** SHOW CARDS
 
-//Shows dealt card to player
-function showPlayerCard(card) {
-  console.log(`You have been dealt: ${card.join('')}`);
+//Formats cards shown
+function formatCards(arr, delim = ", ", conj = "and") {
+
+  if (arr.length < 2) {
+    return arr.join();
+
+  } else if (arr.length === 2) {
+    return arr.join(` ${conj} `);
+
+  } else {
+    return arr.slice(0, arr.length - 1).join(delim) +
+      `${delim}${conj} ${arr[arr.length - 1]}`;
+  }
 }
 
-//Shows dealer's card when dealt
-function showDealerCard(card) {
-  console.log(`\nDealer has been dealt: ${card.join('')}`);
-}
-
-//Show all player cards and score to player
-//Format this
-function showPlayerStatus(playerCards) {
-  let cardNames = [];
-  let score = calculateScore(playerCards);
-
-  playerCards.forEach(card => {
-    cardNames.push(card.join(''));
-  });
-
-  console.log(`\nYou hold ${cardNames} and have a total score of ${score}`);
-}
-
-//Show all of dealer's cards to player
-//Format this
-function showDealerHand(dealerCards) {
-  let cardNames = [];
-
-  dealerCards.forEach(card => {
-    cardNames.push(card.join(''));
-  });
-  console.log(`\nDealer holds: ${cardNames}`);
-}
-
-//Show cards to player
-//Function to loop through arrays and log each card
-//Maybe use the "and" formatting you're going to use above
+//Shows first cards to player
+//This has a separate function b/c dealer's second card must be hidden
 function showFirstCards(playerCards, dealerCards) {
-  let playerCardOne = playerCards[0].join('');
-  let playerCardTwo = playerCards[1].join('');
-  let dealerCardOne = dealerCards[0].join('');
+  let playerCardNames = [];
+  playerCards.forEach(card => playerCardNames.push(card.join('')));
   let playerScore = calculateScore(playerCards);
 
-  console.log(`You have been dealt: ${playerCardOne} and ${playerCardTwo} and have a score of ${playerScore}`);
-  console.log(`Dealer has been dealt: ${dealerCardOne} and ???`);
+  console.log(`You have been dealt: ${formatCards(playerCardNames)} and have a score of ${playerScore}`);
+  console.log(`Dealer has been dealt: ${dealerCards[0].join('')} and [???]`);
 }
 
-//GAME MOVES
+//Shows dealt card
+function showCard(card, currentPlayer) {
+  let name;
+  if (currentPlayer === "PLAYER") {
+    name = "You have";
+  } else {
+    name = "Dealer has";
+  }
+  console.log(`${name} been dealt: ${card.join('')}`);
+}
+
+//Show specified player's hand and score
+function showStatus(cards, currentPlayer) {
+  let score = calculateScore(cards);
+  let cardNames = [];
+  cards.forEach(card => cardNames.push(card.join('')));
+
+  let name;
+  if (currentPlayer === "PLAYER") {
+    name = "You hold";
+  } else {
+    name = "Dealer holds";
+  }
+
+  console.log(`\n${name} ${formatCards(cardNames)} with a total score of ${score}`);
+}
+
+//*** GAME MOVES
 
 //Deals one new card
-//Makes sure that no card is dealt twice
+//Ensures no card is dealt twice
 function dealNewCard(dealtCards) {
 
   let startLength = dealtCards.length;
@@ -117,44 +160,52 @@ function dealNewCard(dealtCards) {
   return newCard;
 }
 
-//Deals and shows player new card
+//Ask player to hit or stick
+function hitOrStick() {
+
+  console.log("\nHit or stick?\nEnter 'h' for hit or 's' for stick");
+  let answer = READLINE.question().toLowerCase();
+
+  while ((answer !== 'h' && answer !== 's') || answer.length > 1) {
+    console.log("Hmmm not sure what you want to do. Please enter 'h' to hit and 's' to stick");
+    answer = READLINE.question().toLowerCase();
+  }
+  return answer;
+}
+
+//If player hits, this deals and shows them a new card
 function playerHits(dealtCards, playerCards) {
+
   let card = dealNewCard(dealtCards);
   playerCards.push(card);
   console.clear();
 
-  showPlayerCard(card);
-  showPlayerStatus(playerCards);
-}
-
-//Ask if hit or stick while player is not bust
-//Maybe add a validate answer function separately
-function hitOrStick(dealtCards, playerCards) {
-  let score = calculateScore(playerCards);
-
-  while (!evaluateBust(score)) {
-    console.log("\nHit or stick? Enter 'h' for hit or 's' for stick");
-    let answer = READLINE.question().trimStart().toLowerCase();
-
-    while ((answer !== 'h' && answer !== 's') || answer.length > 1) {
-      console.log("Hmmm not sure what you want to do. Please enter 'h' to hit and 's' to stick");
-      answer = READLINE.question().trimStart().toLowerCase();
-    }
-
-    if (answer === 'h') {
-      playerHits(dealtCards, playerCards);
-      score = calculateScore(playerCards);
-
-      if (evaluateBust(score)) break;
-
-    } else break;
-  }
+  showCard(card, "PLAYER");
+  showStatus(playerCards, "PLAYER");
 }
 
 //Player go
 function playerGo(dealtCards, playerCards) {
-  hitOrStick(dealtCards, playerCards);
-  printPlayerResults(playerCards);
+  let score = calculateScore(playerCards);
+
+  while (!evaluateBust(score)) {
+
+    let response = hitOrStick();
+
+    if (response === 'h') {
+      playerHits(dealtCards, playerCards);
+      score = calculateScore(playerCards);
+
+      if (evaluateBust(score)) {
+        printPlayerResults(playerCards);
+        break;
+      }
+
+    } else if (response === 's') {
+      printPlayerResults(playerCards);
+      break;
+    }
+  }
 }
 
 //Dealer go
@@ -167,14 +218,14 @@ function dealerGo(dealtCards, dealerCards, playerCards) {
 
     let card = dealNewCard(dealtCards);
     dealerCards.push(card);
-    showDealerCard(card);
+    showCard(card);
     dealerScore = calculateScore(dealerCards);
   }
 }
 
-//RESULTS
+//*** RESULTS
 
-//Calculate score
+//Calculates score
 function calculateScore(cards) {
 
   let cardValues = cards.map(card => card[0]);
@@ -196,68 +247,104 @@ function calculateScore(cards) {
   return sum;
 }
 
-//Evaluate if bust
+//Evaluates if bust
 function evaluateBust(score) {
   return score > MAX_POINTS;
 }
 
-//Print player's results after their go
+//Prints player's results after their go
 function printPlayerResults(playerCards) {
 
   let score = calculateScore(playerCards);
 
   if (evaluateBust(score)) {
-    console.log(`\nYou're bust with a total score of ${score}! Bad luck, you lose.\nEnd of game :(`);
+    console.log(`\nYou're bust with a total score of ${score}! Bad luck, you lose :(`);
 
   } else {
     console.clear();
-    console.log(`You've chosen to stick with a total score of ${score}.\nDealer's go!`);
+    console.log(`You've chosen to stick with a total score of ${score}.\nDealer's go!\n`);
   }
 }
 
-//Calculate game result at end
-function calculateTotalResult(dealerCards, playerCards) {
+//Calculates game result
+function calculateResult(dealerCards, playerCards) {
   let dealerScore = calculateScore(dealerCards);
   let playerScore = calculateScore(playerCards);
 
-  if (evaluateBust(dealerScore)) {
-    return 'DEALER_BUST';
+  if (evaluateBust(playerScore)) {
+    return "PLAYER_BUST";
+
+  } else if (evaluateBust(dealerScore)) {
+    return "DEALER_BUST";
 
   } else if (playerScore < dealerScore) {
-    return 'DEALER';
+    return "DEALER";
 
   } else if (playerScore === dealerScore) {
-    return 'DRAW';
+    return "DRAW";
 
   } else {
-    return 'PLAYER';
+    return "PLAYER";
   }
 }
 
-//Print game result after dealer go
+//Prints game result
 function printResult(dealerCards, playerCards) {
-  let result = calculateTotalResult(dealerCards, playerCards);
+  let result = calculateResult(dealerCards, playerCards);
   let dealerScore = calculateScore(dealerCards);
   let playerScore = calculateScore(playerCards);
 
   switch (result) {
-    case 'DEALER_BUST':
+    case "DEALER_BUST":
       console.log(`\nDealer is bust with a score of ${dealerScore}. Well done, you win!`);
       break;
-    case 'DEALER':
+    case "DEALER":
       console.log(`\nDealer wins with a score of ${dealerScore}. Bad luck :(`);
       break;
-    case 'DRAW':
+    case "DRAW":
       console.log(`\nYou've both scored ${playerScore}. Dealer wins on a draw :()`);
       break;
-    case 'PLAYER':
+    case "PLAYER":
       console.log(`\nDealer loses with a score of ${dealerScore} against your score of ${playerScore}!`);
   }
 }
 
-//PLAY GAME
+//Displays match winner
+function showMatchWinner(scores) {
 
-//Open the game: deal, assign and show cards
+  if (scores.playerWins === GAMES_TO_WIN) {
+    console.log("\nWELL DONE! You've won the match!");
+
+  } else if (scores.dealerWins === GAMES_TO_WIN) {
+    console.log("\nBAD LUCK - dealer won the match!");
+  }
+}
+
+//Increments scores
+function updateScores(scores, result) {
+
+  if (result === "PLAYER_BUST" || result === "DEALER" || result === "DRAW") {
+    scores.dealerWins += 1;
+
+  } else if (result === "DEALER_BUST" || result === "PLAYER") {
+    scores.playerWins += 1;
+  }
+}
+
+//Increments rounds
+function updateRounds(scores) {
+  scores.rounds += 1;
+}
+
+//Displays scores
+function displayScores(scores) {
+  console.log(`\nROUND: ${scores.rounds} || YOUR SCORE: ${scores.playerWins} || DEALER SCORE: ${scores.dealerWins}`);
+}
+
+//*** PLAYING THE GAME
+
+//Opens the game
+//Deals, assigns and shows cards
 function openGame(dealtCards, playerCards, dealerCards) {
   dealFirstCards(dealtCards);
   assignFirstCards(playerCards, dealerCards, dealtCards);
@@ -265,10 +352,31 @@ function openGame(dealtCards, playerCards, dealerCards) {
   showFirstCards(playerCards, dealerCards);
 }
 
-//Play again
+//Plays one round
+function playRound(scores) {
+  let dealtCards = [];
+  let playerCards = [];
+  let dealerCards = [];
+
+  openGame(dealtCards, playerCards, dealerCards);
+  playerGo(dealtCards, playerCards);
+
+  if (!evaluateBust(calculateScore(playerCards))) {
+    dealerGo(dealtCards, dealerCards, playerCards);
+    showStatus(dealerCards);
+    printResult(dealerCards, playerCards);
+  }
+
+  updateScores(scores, calculateResult(dealerCards, playerCards));
+  updateRounds(scores);
+  displayScores(scores);
+  READLINE.question("\nPress ENTER to continue");
+}
+
+//Asks player if they want to play again
 function playAgain() {
 
-  console.log("\nDo you want to play again? Press 'y' and enter if yes\nPress any other key to exit");
+  console.log("\nDo you want to play another match? Enter 'y' if yes\nPress any other key to exit");
   let answer = READLINE.question().toLowerCase();
 
   while (answer[0] === 'y' && answer.length > 1) {
@@ -279,23 +387,28 @@ function playAgain() {
   return answer === 'y';
 }
 
-//Game loop
-//Remove console log of results...
-while (true) {
-  let dealtCards = [];
-  let playerCards = [];
-  let dealerCards = [];
+//Plays rounds until one person wins the match
+function playMatch() {
 
-  openGame(dealtCards, playerCards, dealerCards);
-  playerGo(dealtCards, playerCards);
+  let scores = { playerWins: 0, dealerWins: 0, rounds: 0 };
 
-  if (!evaluateBust(calculateScore(playerCards))) {
-    dealerGo(dealtCards, dealerCards, playerCards);
-    showDealerHand(dealerCards);
-    printResult(dealerCards, playerCards);
+  while (scores.playerWins < GAMES_TO_WIN && scores.dealerWins < GAMES_TO_WIN) {
+    playRound(scores);
   }
-
-  if (!playAgain()) break;
-
+  showMatchWinner(scores);
 }
 
+//Plays matches until player quits
+function playTwentyOnes() {
+  do {
+    printWelcome();
+    playMatch();
+
+  } while (playAgain());
+
+  printGoodbye();
+}
+
+//*** PROGRAM
+
+playTwentyOnes();
