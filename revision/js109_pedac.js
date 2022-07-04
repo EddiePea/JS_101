@@ -1,8 +1,8 @@
 
 function longestConsec(arr, int) {
 
-  if (arr.Length === 0 ||
-      int > arr.Length ||
+  if (arr.length === 0 ||
+      int > arr.length ||
       int <= 0) {
     return "";
 
