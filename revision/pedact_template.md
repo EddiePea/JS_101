@@ -1,6 +1,8 @@
 **INSTRUCTIONS**
 
 **OUTLINE**
+- INPUT: 
+- OUTPUT: 
 
 **REQUIREMENTS**
 
