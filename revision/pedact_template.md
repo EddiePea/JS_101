@@ -2,7 +2,7 @@
 
 **OUTLINE**
 - INPUT: 
-- OUTPUT: 
+- OUTPUT:
 
 **REQUIREMENTS**
 
