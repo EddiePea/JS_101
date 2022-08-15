@@ -29,3 +29,4 @@ negative(Infinity);  // -Infinity
 - Else return -1 * num;
 
 **NOTES**
+- Come back to consider what -0 actually is
