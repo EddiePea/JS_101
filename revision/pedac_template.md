@@ -1,0 +1,17 @@
+**INSTRUCTIONS**
+
+**OUTLINE**
+- INPUT:
+- OUTPUT: 
+
+**RULES**
+
+**ASSUMPTIONS**
+
+**TESTS**
+
+**DATA STRUCTURE**
+
+**ALGORITHM**
+
+**NOTES**
