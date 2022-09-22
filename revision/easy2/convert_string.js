@@ -26,9 +26,9 @@ function stringToInteger2(str) {
 }
 
 //TESTS
-console.log(stringToInteger("4321") === 4321); // logs true
-console.log(stringToInteger("570") === 570); // logs true
-console.log(stringToInteger("1000") === 1000); // logs true
+console.log(stringToInteger2("4321") === 4321); // logs true
+console.log(stringToInteger2("570") === 570); // logs true
+console.log(stringToInteger2("1000") === 1000); // logs true
 
 //hexadecimalToInteger function
 //Converts string representing a hex num to its integer value

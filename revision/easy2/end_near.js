@@ -12,6 +12,7 @@ console.log(penultimate("Launch School is great!") === "is"); // logs true
 function middleWord(str) {
   let strArr = str.split(' ');
   let arrLength = strArr.length;
+
   switch (arrLength) {
     case 0:
       return '';

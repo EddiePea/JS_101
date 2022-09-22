@@ -35,6 +35,7 @@ console.log(oddities([])); // logs []
   - Initialise newARr
   - Call forEach method on arr argument
   - Push elements for which [elem % 2 === 0] returns true
+  
 - Could use loop:
   - SET empty array
   - SET counter at 0;
