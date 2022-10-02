@@ -45,8 +45,19 @@ find edge cases that are not covered
 
 - PEDAC part at start with data structure
   - It's ok to go to the algo first
-  - Dynamic framework
+  - Dynamic framework -> start with algo
 
+- Autoclosing brackets disabled
+    - Settings bottom right of coderPad -> field, autoclosing brackets
+    - Ask in interview if you can enable them
+
+- Assessment - quiet place...
+EDX course
+PM till recent
+Business degree
+Study -> 12-7 pm study with people; slightly before free
+Free in mornings
+Pomodoro ->
 */
 
 
@@ -62,7 +73,7 @@ If the length of the input string is 0, return value must be 0.
 
 /*
 INSTRUCTIONS/RULES:
-- Length of longest substring in inputStr  
+- Length of longest substring in inputStr
   - substring === same in reverse (i.e. palindrome)
 - If inputStr.length === 0, return 0
 - palindromic substring length can be 1
@@ -142,16 +153,15 @@ function palindromes(str) {
 
 function longestPalindrome(str) {
   if (str.length === 0) return 0;
-  
+
   let palArr = palindromes(str);
-  
+
   let lengthsArr = palArr.map(word => {
     return word.length;
   });
-  
+
   return Math.max(...lengthsArr);
 }
-
 
 
 console.log(longestPalindrome("a")); // 1
@@ -214,3 +224,14 @@ Algorithm:
     - Sort the palindromes array by increasing length of the strings
     - return the first element's length
 */
+
+function findSubs(str) {
+  let substrings = [];
+  for (let i = 0; i < str.length; i += 1) {
+    let start = i;
+    let subStr = 
+
+    let end = str[length - 1];
+
+  }
+}

@@ -32,6 +32,12 @@ function printTeddyAge(age) {
 
 printTeddyAge(generateTeddyAge());
 
+function generateRandomNum2() {
+  return Math.ceil((Math.random() * 100) + 20);
+}
+
+console.log(`The random Num is ${generateRandomNum2()}`);
+
 //LS solution
 
 function randomNumBetween(min, max) {
@@ -43,3 +49,12 @@ function randomNumBetween2(num1, num2) {
   let max = Math.max(num1, num2);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function randomNumBetween3(num1, num2) {
+  let min = Math.min(num1, num2);
+  let max = Math.max(num1, num2);
+
+  return Math.ceil((Math.random() * (max - min)) + min);
+}
+
+console.log(randomNumBetween3(20, 120));

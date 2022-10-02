@@ -28,8 +28,6 @@
 - Convert wordsArr back into a string with whitespace between each wordsArr element
 - Return string
 
-
-
 **NOTES**
 - Watch out for punctuation marks
 - Don't forget -> if you want to output a new string from old, you need to reassign value of old string to newString value
